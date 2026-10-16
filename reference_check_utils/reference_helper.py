@@ -7,7 +7,7 @@ import json
 from openpyxl import Workbook
 from openpyxl.styles import Font, Alignment
 from openpyxl.utils import get_column_letter
-import gliner_util
+import page_doi_util
 import html
 
 DOI_RE = re.compile(
@@ -16,11 +16,6 @@ DOI_RE = re.compile(
     re.IGNORECASE
 )
 
-# Typical journal citation:
-# J Psychopharmacol. 2019;33(9):1039-1057.
-# NUMBERS_RE = re.compile(
-#     r'\b\d{4};\s*\d+(?:\([^)]*\))?:\s*[\w-]+(?:-[\w-]+)?\.?$'
-# )
 YEAR_RE = r"(?:18|19|20|21)\d{2}"
 
 NUMBERS_RE = re.compile(
@@ -758,7 +753,7 @@ def get_ref_result_list(all_ref_objs, journal_dict, max_refs=None):
             actual_ref = clean(ref.get("actual_ref"))
             print(f"Cleaned ACTUAL REF in helper -> {actual_ref}")
             # doi = normalize_doi(ref.get("doi"))
-            doi = normalize_doi(gliner_util.extract_dois(actual_ref))
+            doi = normalize_doi(page_doi_util.extract_dois(actual_ref))
             print(f"Extracted doi: {doi}")
             # Track metadata problems without skipping the reference.
             missing_components = []
@@ -833,7 +828,7 @@ def get_ref_result_list(all_ref_objs, journal_dict, max_refs=None):
             # ------------------------------------------------------
             # 5. Bibliographic numbers
             # ------------------------------------------------------
-            numbers = gliner_util.extract_page_info(actual_ref)
+            numbers = page_doi_util.extract_page_info(actual_ref)
             print(f'----------NUMBERS: {numbers}')
             # Support separately supplied number fields.
             if not numbers and any(

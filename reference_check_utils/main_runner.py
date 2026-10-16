@@ -2,8 +2,6 @@ from pathlib import Path
 import json
 import journal_list_helper
 import reference_helper
-import new_excel_helper
-import gliner_util
 
 path = journal_list_helper.download_medline_journals()
 
@@ -43,31 +41,11 @@ for k, ref in references.items():
     for r in all_refs:
         if 'reference' in r.lower():
             continue
-        # print(r)
-        # print(f'--------ACTUAL REF{r}')
-        # extracted_doi = gliner_util.extract_dois(r)
-        # if 'No DOI found' not in extracted_doi:
-        #     print(f'EXTRACTED DOI -> {extracted_doi}')
-        #     page_info = gliner_util.extract_page_info(r)
         ref_dict = reference_helper.parse_reference_deter(r)
-        # # print(page_info)
-        # print()
         all_ref_objs.append(ref_dict)
-        # print()
     res_list[k] = all_ref_objs
     final_ref_map[k] = reference_helper.get_ref_result_list(res_list[k], journal_dict)
 
-# print(len(res_list))
-
-
-
-# for k,all_refs in res_list.items():
-#     final_ref_map[k] = reference_helper.get_ref_result_list(all_refs, journal_dict, 3)
-
-# new_excel_helper.create_reference_edits_excel(
-#     final_ref_map,
-#     "final_reference_results.xlsx",
-# )
 
 import highlight_excel
 
